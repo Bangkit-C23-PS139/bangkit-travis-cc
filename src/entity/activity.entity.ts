@@ -25,6 +25,26 @@ class ActivityEntity implements Activity {
     this.end_time = end_time;
   }
 
+  public edit(
+    activity_name: string,
+    location: TypeLocation,
+    description: string,
+    background_img: string,
+    gmap_link: string,
+    start_time: Date,
+    end_time: Date,
+  ) {
+    this.activity_name = activity_name ?? this.activity_name;
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-ignore
+    this.location = location === null ? this.location : !(location.toUpperCase() in TypeLocation) ? undefined : location.toUpperCase();
+    this.description = description ?? this.description;
+    this.background_img = background_img ?? this.background_img;
+    this.gmap_link = gmap_link ?? this.gmap_link;
+    this.start_time = start_time ?? this.start_time;
+    this.end_time = end_time ?? this.end_time;
+  }
+
   @PrimaryColumn()
   id: string;
 
@@ -33,7 +53,7 @@ class ActivityEntity implements Activity {
 
   @Column({
     type: 'varchar',
-    length: 12,
+    length: 25,
     nullable: false,
   })
   location: TypeLocation;

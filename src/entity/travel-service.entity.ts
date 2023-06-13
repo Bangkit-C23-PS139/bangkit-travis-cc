@@ -29,6 +29,30 @@ class TravelServiceEntity implements TravelService {
     this.contact_number = contact_number;
   }
 
+  public edit(
+    service_name: string,
+    location: TypeLocation,
+    description: string,
+    service_provider: string,
+    service_price: number,
+    gmap_link: string,
+    background_img: string,
+    image_gallery: string[],
+    contact_number: string,
+  ) {
+    this.service_name = service_name ?? this.service_name;
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-ignore
+    this.location = location === null ? this.location : !(location.toUpperCase() in TypeLocation) ? undefined : location.toUpperCase();
+    this.description = description ?? this.description;
+    this.background_img = background_img ?? this.background_img;
+    this.gmap_link = gmap_link ?? this.gmap_link;
+    this.image_gallery = image_gallery ?? this.image_gallery;
+    this.service_price = service_price ?? this.service_price;
+    this.service_provider = service_provider ?? this.service_provider;
+    this.contact_number = contact_number ?? this.contact_number;
+  }
+
   @PrimaryColumn()
   id: string;
 
@@ -37,7 +61,7 @@ class TravelServiceEntity implements TravelService {
 
   @Column({
     type: 'varchar',
-    length: 12,
+    length: 25,
     nullable: false,
   })
   location: TypeLocation;

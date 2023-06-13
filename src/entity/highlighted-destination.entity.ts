@@ -27,6 +27,28 @@ class HighlightedDestinationEntity implements HighlightedDestination {
     this.contact_number = contact_number;
   }
 
+  public edit(
+    destination_name: string,
+    location: TypeLocation,
+    description: string,
+    background_img: string,
+    gmap_link: string,
+    image_gallery: string[],
+    activity: string[],
+    contact_number: string,
+  ) {
+    this.destination_name = destination_name ?? this.destination_name;
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-ignore
+    this.location = location === null ? this.location : !(location.toUpperCase() in TypeLocation) ? undefined : location.toUpperCase();
+    this.description = description ?? this.description;
+    this.background_img = background_img ?? this.background_img;
+    this.gmap_link = gmap_link ?? this.gmap_link;
+    this.image_gallery = image_gallery ?? this.image_gallery;
+    this.activity = activity ?? this.activity;
+    this.contact_number = contact_number ?? this.contact_number;
+  }
+
   @PrimaryColumn()
   id: string;
 
@@ -35,7 +57,7 @@ class HighlightedDestinationEntity implements HighlightedDestination {
 
   @Column({
     type: 'varchar',
-    length: 12,
+    length: 25,
     nullable: false,
   })
   location: TypeLocation;

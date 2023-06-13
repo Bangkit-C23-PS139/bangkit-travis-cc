@@ -1,8 +1,16 @@
 import UserEntity from '@/entity/user.entity';
 
 export enum TypeLocation {
-  JAKARTA = 'Jakarta',
-  YOGYAKARTA = 'Yogyakarta',
+  'KEPULAUAN SERIBU' = 'Kepulauan Seribu',
+  'JAKARTA BARAT' = 'Jakarta Barat',
+  'JAKARTA PUSAT' = 'Jakarta Pusat',
+  'JAKARTA SELATAN' = 'Jakarta Selatan',
+  'JAKARTA TIMUR' = 'Jakarta Timur',
+  'JAKARTA UTARA' = 'Jakarta Utara',
+  'YOGYAKARTA' = 'Yogyakarta',
+  'BANTUL' = 'Bantul',
+  'GUNUNGKIDUL' = 'Gunungkidul',
+  'KULON PROGO' = 'Kulon Progo',
 }
 
 export interface Activity extends ActivityRequest {

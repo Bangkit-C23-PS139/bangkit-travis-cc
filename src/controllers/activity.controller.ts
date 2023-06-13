@@ -146,22 +146,15 @@ class ActivityController {
     }
   }
 
-  public async deleteActivity(req: RequestWithUser, res: Response, next: NextFunction) {
-    const { id } = req.params;
+  public async deleteActivity(req: Request, res: Response, next: NextFunction) {
     const activityRepository = getRepository(ActivityEntity);
 
-    const findActivity = await activityRepository.findOne(id);
-    if (!findActivity) {
-      next(new HttpException(404, 'Activity not found!'));
-      return;
-    }
-
+    const findActivity = await activityRepository.find();
     activityRepository
       .softRemove(findActivity)
       .then(r => {
         res.status(200).send({
-          message: 'Successfully removed activity with id: ' + id,
-          data: r,
+          message: 'Successfully removed all activities',
         });
       })
       .catch(e => {
@@ -285,6 +278,68 @@ class ActivityController {
       next(new HttpException(404, 'Data not found'));
       return;
     }
+  }
+
+  public updateActivity = async (req: Request, res: Response, next: NextFunction) => {
+    const { id } = req.params;
+    const { activity_name, location, description, background_img, gmap_link, start_time, end_time } = req.body;
+
+    const activityRepository = getRepository(ActivityEntity);
+
+    const findActivity = await activityRepository.findOne({
+      where: {
+        id: id,
+      },
+      relations: ['users'],
+    });
+    if (!findActivity) {
+      next(new HttpException(404, 'activity not found!'));
+      return;
+    }
+
+    findActivity.edit(activity_name, location, description, background_img, gmap_link, start_time, end_time);
+    if (findActivity.location === undefined) {
+      next(new HttpException(400, 'Invalid Location inputed'));
+      return;
+    }
+
+    activityRepository
+      .save(findActivity)
+      .then(r => {
+        res.status(200).send({
+          message: 'successfully updated activity with id: ' + id,
+          data: r,
+        });
+      })
+      .catch(e => {
+        next(new HttpException(500, 'something wrong happened: ' + e));
+      });
+  };
+
+  public async deleteActivityById(req: Request, res: Response, next: NextFunction) {
+    const { id } = req.params;
+    const activityRepository = await getRepository(ActivityEntity);
+
+    const findActivity = await activityRepository.findOne({
+      where: { id: id },
+      relations: ['users'],
+    });
+    if (!findActivity) {
+      next(new HttpException(404, 'Activity not found'));
+      return;
+    }
+
+    activityRepository
+      .softRemove(findActivity)
+      .then(r => {
+        res.status(200).send({
+          message: 'Successfully deleted activity of id: ' + id,
+          data: r,
+        });
+      })
+      .catch(e => {
+        next(new HttpException(500, 'Something wrong happened: ' + e));
+      });
   }
 }
 

@@ -19,6 +19,9 @@ class ActivityRoute implements Routes {
     this.router.get(`${this.path}/user/find`, authMiddleware, this.activityController.getActivityByUser);
     this.router.post(`${this.path}/:id/link`, authMiddleware, this.activityController.linkUser);
     this.router.post(`${this.path}/:id/unlink/`, authMiddleware, this.activityController.unlinkUser);
+    this.router.put(`${this.path}/:id`, authMiddleware, this.activityController.updateActivity);
+    this.router.delete(`${this.path}`, authMiddleware, this.activityController.deleteActivity);
+    this.router.delete(`${this.path}/:id`, authMiddleware, this.activityController.deleteActivityById);
   }
 }
 

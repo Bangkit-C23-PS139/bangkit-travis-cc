@@ -2,6 +2,7 @@
 	"info": {
 		"_postman_id": "1132d382-105f-49e9-924d-388477cab052",
 		"name": "Bangkit",
+		"description": "Use This for **location** on <u><b>POST/PUT</b></u> or **city** on <u><b>GET</b></u>\n\n``` json\nenum Typelocation {\n  'KEPULAUAN SERIBU' = 'Kepulauan Seribu',\n  'JAKARTA BARAT' = 'Jakarta Barat',\n  'JAKARTA PUSAT' = 'Jakarta Pusat',\n  'JAKARTA SELATAN' = 'Jakarta Selatan',\n  'JAKARTA TIMUR' = 'Jakarta Timur',\n  'JAKARTA UTARA' = 'Jakarta Utara',\n  'YOGYAKARTA' = 'Yogyakarta',\n  'BANTUL' = 'Bantul',\n  'GUNUNGKIDUL' = 'Gunungkidul',\n  'KULON PROGO' = 'Kulon Progo',\n}\n\n```",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
 		"_exporter_id": "16139130"
 	},
@@ -16,7 +17,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"nama\" : \"test123456\",\r\n    \"email\": \"test123456@gmail.com\",\r\n    \"password\": \"123456\",\r\n    \"gender\": \"Female\",\r\n    \"age\" : 20,\r\n    \"travel_preferences\": [\"Beach\", \"Diving\"]\r\n}",
+							"raw": "{\r\n    \"nama\" : \"test123\",\r\n    \"email\": \"test123@gmail.com\",\r\n    \"password\": \"123456\",\r\n    \"gender\": \"Female\",\r\n    \"age\" : 20,\r\n    \"travel_preferences\": [\"Beach\", \"Diving\"]\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -43,7 +44,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"email\": \"test123456@gmail.com\",\r\n    \"password\": \"123456\"\r\n}",
+							"raw": "{\r\n    \"email\": \"test123@gmail.com\",\r\n    \"password\": \"123456\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -236,6 +237,101 @@
 						}
 					},
 					"response": []
+				},
+				{
+					"name": "Edit Activity",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Access_Token",
+								"value": "{{Access_Token}}",
+								"type": "text"
+							},
+							{
+								"key": "Refresh_Token",
+								"value": "{{Refresh_Token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"activity_name\" : \"Edited name\",\r\n    \"location\" : \"Bantul\",\r\n    \"description\": \"Lorem ipsum testing\",\r\n    \"background_img\": \"\",\r\n    \"gmap_link\": \"\",\r\n    \"start_time\": \"2023-06-11 10:00:00\",\r\n    \"end_time\": \"2023-06-11 11:00:00\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/activity/{{activity_id}}",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"activity",
+								"{{activity_id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Activity By Id",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Access_Token",
+								"value": "{{Access_Token}}",
+								"type": "text"
+							},
+							{
+								"key": "Refresh_Token",
+								"value": "{{Refresh_Token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/activity/{{activity_id}}",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"activity",
+								"{{activity_id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete All Activities",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Access_Token",
+								"value": "{{Access_Token}}",
+								"type": "text"
+							},
+							{
+								"key": "Refresh_Token",
+								"value": "{{Refresh_Token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/activity",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"activity"
+							]
+						}
+					},
+					"response": []
 				}
 			]
 		},
@@ -346,7 +442,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"nama\" : \"Updated test123456\",\r\n    \"gender\": \"Male\",\r\n    \"age\" : 21,\r\n    \"travel_preferences\" : [\"Mountain\", \"Sunrise\"]\r\n}",
+							"raw": "{\r\n    \"nama\" : \"Updated name\",\r\n    \"gender\": \"Male\",\r\n    \"age\" : 21,\r\n    \"travel_preferences\" : [\"Mountain\", \"Sunrise\"]\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -361,6 +457,100 @@
 							"path": [
 								"users",
 								"self"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Edit User Data",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Access_Token",
+								"value": "{{Access_Token}}",
+								"type": "text"
+							},
+							{
+								"key": "Refresh_Token",
+								"value": "{{Refresh_Token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"nama\" : \"Updated name\",\r\n    \"gender\": \"Other\",\r\n    \"age\" : 21,\r\n    \"travel_preferences\" : [\"Staycation\"]\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/users/{{user_id}}",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"users",
+								"{{user_id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete All Users",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Access_Token",
+								"value": "{{Access_Token}}",
+								"type": "text"
+							},
+							{
+								"key": "Refresh_Token",
+								"value": "{{Refresh_Token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/users",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"users"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete User By Id",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Access_Token",
+								"value": "{{Access_Token}}",
+								"type": "text"
+							},
+							{
+								"key": "Refresh_Token",
+								"value": "{{Refresh_Token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/users",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"users"
 							]
 						}
 					},
@@ -444,6 +634,106 @@
 						}
 					},
 					"response": []
+				},
+				{
+					"name": "Edit Destination",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Access_Token",
+								"value": "{{Access_Token}}",
+								"type": "text"
+							},
+							{
+								"key": "Refresh_Token",
+								"value": "{{Refresh_Token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"destination_name\" : \"Parangtritis updated\",\r\n    \"location\" : \"Bantul\",\r\n    \"description\": \"Lorem ipsum testing\",\r\n    \"background_img\": \"\",\r\n    \"gmap_link\": \"\",\r\n    \"image_gallery\" : [\"1\", \"2\", \"3\"],\r\n    \"activity\": [\"1\", \"2\", \"3\"],\r\n    \"contact_number\" : \"0812112345546\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/destination/{{destination_id}}",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"destination",
+								"{{destination_id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Destination By Id",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Access_Token",
+								"value": "{{Access_Token}}",
+								"type": "text"
+							},
+							{
+								"key": "Refresh_Token",
+								"value": "{{Refresh_Token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{base_url}}/destination/{{destination_id}}",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"destination",
+								"{{destination_id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete All Destinations",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Access_Token",
+								"value": "{{Access_Token}}",
+								"type": "text"
+							},
+							{
+								"key": "Refresh_Token",
+								"value": "{{Refresh_Token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/destination/",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"destination",
+								""
+							]
+						}
+					},
+					"response": []
 				}
 			]
 		},
@@ -520,6 +810,104 @@
 								"travel",
 								"service",
 								"{{service_id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Edit Travel Service",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Access_Token",
+								"value": "{{Access_Token}}",
+								"type": "text"
+							},
+							{
+								"key": "Refresh_Token",
+								"value": "{{Refresh_Token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"service_name\" : \"Taksi Online Updated\",\r\n    \"location\" : \"Jakarta Timur\",\r\n    \"description\": \"Lorem ipsum testing\",\r\n    \"service_provider\" : \"Gojek\",\r\n    \"service_price\": 10000,\r\n    \"background_img\": \"\",\r\n    \"gmap_link\": \"\",\r\n    \"image_gallery\" : [\"1\", \"2\", \"3\"],\r\n    \"contact_number\" : \"0812112345546\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/travel/service/{{service_id}}",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"travel",
+								"service",
+								"{{service_id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Service By Service Id",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Access_Token",
+								"value": "{{Access_Token}}",
+								"type": "text"
+							},
+							{
+								"key": "Refresh_Token",
+								"value": "{{Refresh_Token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/travel/service/{{service_id}}",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"travel",
+								"service",
+								"{{service_id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete All Travel Services",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Access_Token",
+								"value": "{{Access_Token}}",
+								"type": "text"
+							},
+							{
+								"key": "Refresh_Token",
+								"value": "{{Refresh_Token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/travel/service",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"travel",
+								"service"
 							]
 						}
 					},

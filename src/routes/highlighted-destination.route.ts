@@ -16,6 +16,9 @@ class HighlightedDestinationRoute implements Routes {
     this.router.post(`${this.path}`, authMiddleware, this.destinationController.addDestination);
     this.router.get(`${this.path}`, this.destinationController.getDestinations);
     this.router.get(`${this.path}/:id`, this.destinationController.getDestinationById);
+    this.router.put(`${this.path}/:id`, authMiddleware, this.destinationController.updateDestination);
+    this.router.delete(`${this.path}/:id`, authMiddleware, this.destinationController.deleteDestinationById);
+    this.router.delete(`${this.path}`, authMiddleware, this.destinationController.deleteDestination);
   }
 }
 

@@ -17,6 +17,9 @@ class UserRoute implements Routes {
     this.router.get(`${this.path}/`, authMiddleware, this.userController.getUsers);
     this.router.get(`${this.path}/:id`, authMiddleware, this.userController.getUserById);
     this.router.put(`${this.path}/self`, authMiddleware, this.userController.editMySelf);
+    this.router.put(`${this.path}/:id`, authMiddleware, this.userController.editUser);
+    this.router.delete(`${this.path}`, authMiddleware, this.userController.deleteUsers);
+    this.router.delete(`${this.path}/:id`, authMiddleware, this.userController.deleteUserByUserId);
   }
 }
 

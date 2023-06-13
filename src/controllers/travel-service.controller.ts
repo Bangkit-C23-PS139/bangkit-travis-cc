@@ -99,6 +99,10 @@ class TravelServiceController {
       const data = await repository.findOne({
         where: { id: serviceId },
       });
+      if (!data) {
+        next(new HttpException(404, 'Service not found'));
+        return;
+      }
 
       res.status(200).json({
         data: data,
@@ -108,6 +112,93 @@ class TravelServiceController {
       next(error);
     }
   };
+
+  public updateTravelService = async (req: Request, res: Response, next: NextFunction) => {
+    const { id } = req.params;
+    const { service_name, location, description, service_provider, service_price, gmap_link, background_img, image_gallery, contact_number } =
+      req.body;
+
+    const travelServiceRepository = getRepository(TravelServiceEntity);
+
+    const findTravelService = await travelServiceRepository.findOne({
+      where: {
+        id: id,
+      },
+    });
+    if (!findTravelService) {
+      next(new HttpException(404, 'Travel service not found!'));
+      return;
+    }
+
+    findTravelService.edit(
+      service_name,
+      location,
+      description,
+      service_provider,
+      service_price,
+      gmap_link,
+      background_img,
+      image_gallery,
+      contact_number,
+    );
+    if (findTravelService.location === undefined) {
+      next(new HttpException(400, 'Invalid Location inputed'));
+      return;
+    }
+
+    travelServiceRepository
+      .save(findTravelService)
+      .then(r => {
+        res.status(200).send({
+          message: 'successfully updated travel service with id: ' + id,
+          data: r,
+        });
+      })
+      .catch(e => {
+        next(new HttpException(500, 'something wrong happened: ' + e));
+      });
+  };
+
+  public async deleteTravelServices(req: Request, res: Response, next: NextFunction) {
+    const travelServiceRepository = getRepository(TravelServiceEntity);
+
+    const findTravelService = await travelServiceRepository.find();
+    travelServiceRepository
+      .softRemove(findTravelService)
+      .then(r => {
+        res.status(200).send({
+          message: 'Successfully removed all travel services',
+        });
+      })
+      .catch(e => {
+        next(new HttpException(500, 'Something went wrong: ' + e));
+      });
+  }
+
+  public async deleteTravelServiceById(req: Request, res: Response, next: NextFunction) {
+    const { id } = req.params;
+    const travelServiceRepository = getRepository(TravelServiceEntity);
+
+    const findTravelService = await travelServiceRepository.findOne({
+      where: { id: id },
+    });
+    if (!findTravelService) {
+      next(new HttpException(404, 'Travel Service not found'));
+      return;
+    }
+
+    travelServiceRepository
+      .softRemove(findTravelService)
+      .then(r => {
+        res.status(200).send({
+          message: 'Successfully deleted travel service of id: ' + id,
+          data: r,
+        });
+      })
+      .catch(e => {
+        next(new HttpException(500, 'Something wrong happened: ' + e));
+      });
+  }
 }
 
 export default TravelServiceController;

@@ -7,4 +7,3 @@ Before running this project, make sure to:
 3. install redis (if OS is windows, follow this tutorial (https://developer.redis.com/create/windows/)
 
 All set! run the server with the command npm run dev
-

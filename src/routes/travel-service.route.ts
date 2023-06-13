@@ -16,6 +16,9 @@ class TravelServiceRoute implements Routes {
     this.router.post(`${this.path}`, authMiddleware, this.serviceController.addTravelService);
     this.router.get(`${this.path}`, this.serviceController.getTravelServices);
     this.router.get(`${this.path}/:id`, this.serviceController.getTravelServiceById);
+    this.router.put(`${this.path}/:id`, authMiddleware, this.serviceController.updateTravelService);
+    this.router.delete(`${this.path}`, authMiddleware, this.serviceController.deleteTravelServices);
+    this.router.delete(`${this.path}/:id`, authMiddleware, this.serviceController.deleteTravelServiceById);
   }
 }
 
