@@ -59,10 +59,13 @@ class TravelServiceController {
     try {
       let offsetSize = 10;
       const repository = getRepository(TravelServiceEntity);
-      const { city, page, pagesize, sort } = req.params;
+      const { city, page, pagesize, sort } = req.query;
+      // @ts-ignore
       const offset: number = page ? parseInt(page) : 0;
+      // @ts-ignore
       offsetSize = pagesize ? parseInt(pagesize) : offsetSize;
 
+      // @ts-ignore
       const searchKey: string = city == null || typeof city == 'undefined' ? '' : city.toString().toUpperCase() in TypeLocation ? city : 'Invalid';
       if (searchKey == 'Invalid') {
         next(new HttpException(400, 'Search key error: Invalid city.'));
@@ -82,7 +85,8 @@ class TravelServiceController {
         data: {
           data: travelServiceData,
           count: nTravelServiceData,
-          totalPages: Math.ceil(nTravelServiceData / 50),
+          // @ts-ignore
+          totalPages: Math.ceil(nTravelServiceData / pagesize),
           page: offset,
         },
         message: 'Berhasil get all travel services',

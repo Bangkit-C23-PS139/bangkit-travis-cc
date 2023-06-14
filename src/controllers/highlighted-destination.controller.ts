@@ -57,10 +57,16 @@ class HighlightedDestinationController {
     try {
       let offsetSize = 10;
       const repository = getRepository(HighlightedDestinationEntity);
-      const { city, page, pagesize, sort } = req.params;
+      const { city, page, pagesize, sort } = req.query;
+      // @ts-ignore
       const offset: number = page ? parseInt(page) : 0;
+      // @ts-ignore
       offsetSize = pagesize ? parseInt(pagesize) : offsetSize;
+      console.log(offset);
+      console.log(offsetSize);
+      console.log(pagesize);
 
+      // @ts-ignore
       const searchKey: string = city == null || typeof city == 'undefined' ? '' : city.toString().toUpperCase() in TypeLocation ? city : 'Invalid';
       if (searchKey == 'Invalid') {
         next(new HttpException(400, 'Search key error: Invalid city.'));
@@ -80,7 +86,8 @@ class HighlightedDestinationController {
         data: {
           data: destinationData,
           count: nDestinationsData,
-          totalPages: Math.ceil(nDestinationsData / 50),
+          // @ts-ignore
+          totalPages: Math.ceil(nDestinationsData / pagesize),
           page: offset,
         },
         message: 'Berhasil get all highlighted destinations',
