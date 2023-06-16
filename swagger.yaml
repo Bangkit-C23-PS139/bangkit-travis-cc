@@ -45,13 +45,6 @@ paths:
       tags:
         - authentication
       summary: Refresh access token
-      parameters:
-        - name: body
-          in: body
-          description: refresh access_token
-          required: true
-          schema:
-            type: object
       security:
         - RefreshTokenAuth: [ ]
         - AccessTokenAuth: [ ]
@@ -72,13 +65,6 @@ paths:
       tags:
         - authentication
       summary: Clear user session from backend service
-      parameters:
-        - name: body
-          in: body
-          description: remove user session from redis-backend
-          required: true
-          schema:
-            type: object
       security:
         - RefreshTokenAuth: [ ]
         - AccessTokenAuth: [ ]
@@ -113,6 +99,18 @@ paths:
           description: "No user found"
         500:
           description: 'Server Error'
+    delete:
+      tags:
+        - users
+      summary: Delete all users
+      security:
+        - RefreshTokenAuth: [ ]
+        - AccessTokenAuth: [ ]
+      responses:
+        200:
+          description: 'Berhasil menghapus semua user'
+        500:
+          description: 'Server Error'
 
   /users/{userId}:
     get:
@@ -134,6 +132,46 @@ paths:
           description: "User not found"
         500:
           description: 'Server Error'
+    put:
+      tags:
+        - users
+      summary: Edit detail of a user
+      security:
+        - RefreshTokenAuth: [ ]
+        - AccessTokenAuth: [ ]
+      parameters:
+        - name: userId
+          in: params
+          description: userId to search for
+          required: true
+        - name: Request Body
+          in: body
+          description: Menambahkan data user yang ingin diedit
+          required: true
+          schema:
+            $ref: '#/definitions/registration'
+      responses:
+        200:
+          description: 'Berhasil'
+        500:
+          description: 'Server Error'
+    delete:
+      tags:
+        - users
+      summary: Delete user based on user id
+      parameters:
+        - name: userId
+          in: params
+          description: userId to search for
+          required: true
+      security:
+        - RefreshTokenAuth: [ ]
+        - AccessTokenAuth: [ ]
+      responses:
+        200:
+          description: 'Berhasil menghapus user'
+        500:
+          description: 'Server Error'
 
   /users/self:
     get:
@@ -148,8 +186,6 @@ paths:
           description: 'Berhasil'
         500:
           description: 'Server Error'
-
-  /users/self/:
     put:
       tags:
         - users
@@ -158,51 +194,48 @@ paths:
         - RefreshTokenAuth: [ ]
         - AccessTokenAuth: [ ]
       parameters:
-        - name: userId
-          in: params
-          description: userId for specific admin
+        - name: Request Body
+          in: body
+          description: Menambahkan data user yang ingin diedit
           required: true
-        - name: isDelete
-          in: query
-          description: use this query for removing from admin, don't use if wanna revive this user to admin again
-          required: false
+          schema:
+            $ref: '#/definitions/registration'
       responses:
         200:
           description: 'Berhasil'
         500:
           description: 'Server Error'
 
-  /head-admin/get-admin-by-id/{userId}:
-    get:
+# Highlighted destinations
+  /destination:
+    post:
       tags:
-        - head-admin
-      summary: get admin studyboard website with their id
+      - destinations
+      summary: Add a new destination
       parameters:
-        - name: userId
-          in: params
-          description: id from specific user
-          required: true
-      security:
-        - RefreshTokenAuth: [ ]
-        - AccessTokenAuth: [ ]
+      - name: Request
+        in: body
+        description: Menambahkan destinasi baru
+        required: true
+        schema:
+          $ref: '#/definitions/destination'
       responses:
         200:
           description: 'Berhasil'
         500:
           description: 'Server Error'
-  /head-admin/update-admin/{userId}:
-    put:
+    get:
       tags:
-        - head-admin
-      summary: Clear user session from backend service
+        - destinations
+      summary: Get All Destinations
       parameters:
-        - name: userId
-          in: params
-          description: userId for specific admin
-          required: true
-        - name: isDelete
+        - name: pagesize
           in: query
-          description: use this query for removing from admin, don't use if wanna revive this user to admin again
+          description: size for each pagination
+          required: false
+        - name: page
+          in: query
+          description: page pointer, start from 0
           required: false
       security:
         - RefreshTokenAuth: [ ]
@@ -211,9 +244,371 @@ paths:
         200:
           description: 'Berhasil'
         404:
-          description: 'Admin not found or hasnt been registered before'
+          description: "No user found"
         500:
           description: 'Server Error'
+    delete:
+      tags:
+        - destinations
+      summary: Delete all destinations
+      security:
+        - RefreshTokenAuth: [ ]
+        - AccessTokenAuth: [ ]
+      responses:
+        200:
+          description: 'Berhasil menghapus semua destinasi'
+        500:
+          description: 'Server Error'
+
+  /destination/{destination_id}:
+    get:
+      tags:
+        - destinations
+      summary: get destination by id
+      parameters:
+        - name: destination_id
+          in: params
+          description: destination_id to search for
+          required: true
+      security:
+        - RefreshTokenAuth: [ ]
+        - AccessTokenAuth: [ ]
+      responses:
+        200:
+          description: 'Berhasil'
+        404:
+          description: "Destination not found"
+        500:
+          description: 'Server Error'
+    put:
+      tags:
+        - destinations
+      summary: Edit detail of a destination
+      security:
+        - RefreshTokenAuth: [ ]
+        - AccessTokenAuth: [ ]
+      parameters:
+        - name: destination_id
+          in: params
+          description: destination_id to search for
+          required: true
+        - name: Request Body
+          in: body
+          description: Menambahkan data user yang ingin diedit
+          required: true
+          schema:
+            $ref: '#/definitions/destination'
+      responses:
+        200:
+          description: 'Berhasil'
+        500:
+          description: 'Server Error'
+    delete:
+      tags:
+        - destinations
+      summary: Delete destination based on id
+      parameters:
+        - name: destinationId
+          in: params
+          description: destinationId to search for
+          required: true
+      security:
+        - RefreshTokenAuth: [ ]
+        - AccessTokenAuth: [ ]
+      responses:
+        200:
+          description: 'Berhasil menghapus destinasi'
+        500:
+          description: 'Server Error'
+
+
+
+# Activity
+  /activity:
+    post:
+      tags:
+      - activity
+      summary: Add a new activity
+      parameters:
+      - name: Request
+        in: body
+        description: Menambahkan aktivitas baru
+        required: true
+        schema:
+          $ref: '#/definitions/activity'
+      responses:
+        200:
+          description: 'Berhasil'
+        500:
+          description: 'Server Error'
+    get:
+      tags:
+        - activity
+      summary: Get All Activities
+      parameters:
+        - name: pagesize
+          in: query
+          description: size for each pagination
+          required: false
+        - name: page
+          in: query
+          description: page pointer, start from 0
+          required: false
+      security:
+        - RefreshTokenAuth: [ ]
+        - AccessTokenAuth: [ ]
+      responses:
+        200:
+          description: 'Berhasil'
+        404:
+          description: "No activity found"
+        500:
+          description: 'Server Error'
+    delete:
+      tags:
+        - activity
+      summary: Delete all Activities
+      security:
+        - RefreshTokenAuth: [ ]
+        - AccessTokenAuth: [ ]
+      responses:
+        200:
+          description: 'Berhasil menghapus semua aktivitas'
+        500:
+          description: 'Server Error'
+
+  /activity/{activity_id}:
+    get:
+      tags:
+        - activity
+      summary: get activity by id
+      parameters:
+        - name: activity_id
+          in: params
+          description: activity_id to search for
+          required: true
+      security:
+        - RefreshTokenAuth: [ ]
+        - AccessTokenAuth: [ ]
+      responses:
+        200:
+          description: 'Berhasil'
+        404:
+          description: "Activity not found"
+        500:
+          description: 'Server Error'
+    put:
+      tags:
+        - activity
+      summary: Edit detail of a activity
+      security:
+        - RefreshTokenAuth: [ ]
+        - AccessTokenAuth: [ ]
+      parameters:
+        - name: activity_id
+          in: params
+          description: activity_id to search for
+          required: true
+        - name: Request Body
+          in: body
+          description: Menambahkan data aktivitas yang ingin diedit
+          required: true
+          schema:
+            $ref: '#/definitions/activity'
+      responses:
+        200:
+          description: 'Berhasil'
+        500:
+          description: 'Server Error'
+    delete:
+      tags:
+        - activity
+      summary: Delete activity based on id
+      parameters:
+        - name: activity_id
+          in: params
+          description: activity_id to search for
+          required: true
+      security:
+        - RefreshTokenAuth: [ ]
+        - AccessTokenAuth: [ ]
+      responses:
+        200:
+          description: 'Berhasil menghapus aktivitas'
+        500:
+          description: 'Server Error'
+
+  /activity/{activity_id}/link:
+    post:
+      tags:
+        - activity
+      parameters:
+        - name: activity_id
+          in: params
+          description: activity_id to search for
+          required: true
+      security:
+        - RefreshTokenAuth: [ ]
+        - AccessTokenAuth: [ ]
+      responses:
+        200:
+          description: 'Berhasil menghubungkan user pada aktivitas'
+        500:
+          description: 'Server Error'
+
+  /activity/{activity_id}/unlink:
+    post:
+      tags:
+        - activity
+      parameters:
+        - name: activity_id
+          in: params
+          description: activity_id to search for
+          required: true
+      security:
+        - RefreshTokenAuth: [ ]
+        - AccessTokenAuth: [ ]
+      responses:
+        200:
+          description: 'Berhasil memutuskan user dari aktivitas'
+        500:
+          description: 'Server Error'
+
+  /activity/user/find:
+    get:
+      tags:
+        - activity
+      parameters:
+        - name: user_id
+          in: query
+          description: user id for list of activities to search
+          required: true
+      security:
+        - RefreshTokenAuth: [ ]
+        - AccessTokenAuth: [ ]
+      responses:
+        200:
+          description: 'Berhasil'
+        404:
+          description: "Activity not found"
+        500:
+          description: 'Server Error'
+
+# Travel Service
+  /travel/service:
+    post:
+      tags:
+      - TravelService
+      summary: Add a new travel service
+      parameters:
+      - name: Request
+        in: body
+        description: Menambahkan travel service baru
+        required: true
+        schema:
+          $ref: '#/definitions/travel_service'
+      responses:
+        200:
+          description: 'Berhasil'
+        500:
+          description: 'Server Error'
+    get:
+      tags:
+        - TravelService
+      summary: Get All Travel Services
+      parameters:
+        - name: pagesize
+          in: query
+          description: size for each pagination
+          required: false
+        - name: page
+          in: query
+          description: page pointer, start from 0
+          required: false
+      security:
+        - RefreshTokenAuth: [ ]
+        - AccessTokenAuth: [ ]
+      responses:
+        200:
+          description: 'Berhasil'
+        404:
+          description: "No user found"
+        500:
+          description: 'Server Error'
+    delete:
+      tags:
+        - TravelService
+      summary: Delete all travel services
+      security:
+        - RefreshTokenAuth: [ ]
+        - AccessTokenAuth: [ ]
+      responses:
+        200:
+          description: 'Berhasil menghapus semua travel service'
+        500:
+          description: 'Server Error'
+
+  /travel/service/{service_id}:
+    get:
+      tags:
+        - TravelService
+      summary: get destination by id
+      parameters:
+        - name: service_id
+          in: params
+          description: service_id to search for
+          required: true
+      security:
+        - RefreshTokenAuth: [ ]
+        - AccessTokenAuth: [ ]
+      responses:
+        200:
+          description: 'Berhasil'
+        404:
+          description: "Travel Service not found"
+        500:
+          description: 'Server Error'
+    put:
+      tags:
+        - TravelService
+      summary: Edit detail of a travel service
+      security:
+        - RefreshTokenAuth: [ ]
+        - AccessTokenAuth: [ ]
+      parameters:
+        - name: service_id
+          in: params
+          description: service_id to search for
+          required: true
+        - name: Request Body
+          in: body
+          description: Menambahkan data user yang ingin diedit
+          required: true
+          schema:
+            $ref: '#/definitions/travel_service'
+      responses:
+        200:
+          description: 'Berhasil'
+        500:
+          description: 'Server Error'
+    delete:
+      tags:
+        - TravelService
+      summary: Delete travel service based on id
+      parameters:
+        - name: service_id
+          in: params
+          description: service_id to search for
+          required: true
+      security:
+        - RefreshTokenAuth: [ ]
+        - AccessTokenAuth: [ ]
+      responses:
+        200:
+          description: 'Berhasil menghapus travel service'
+        500:
+          description: 'Server Error'
+
 # definitions
 definitions:
   registration:
@@ -225,6 +620,7 @@ definitions:
       - gender
       - age
       - travel_preferences
+      - picture_url
     properties:
       nama:
         type: string
@@ -246,6 +642,9 @@ definitions:
         items:
           type: string
         description: user preferences for traveling recommendations.
+      picture_url:
+        type: string
+        description: url of user profile picture
 
   login:
     type: object
@@ -259,6 +658,123 @@ definitions:
       password:
         type: string
         description: password of user account
+
+  activity:
+    type: object
+    required:
+      - activity_name
+      - location
+      - description
+      - background_img
+      - gmap_link
+      - start_time
+      - end_time
+    properties:
+      activity_name:
+        type: string
+        description: name of activity
+      location:
+        type: string
+        description: location
+      description:
+        type: string
+        description: description of activity
+      background_img:
+        type: string
+        description: url of background image
+      gmap_link:
+        type: string
+        description: link of gmap location
+      start_time:
+        type: string
+        description: start time of activity
+      end_time:
+        type: string
+        description: end time of activity
+
+  destination:
+    type: object
+    required:
+      - destination_name
+      - location
+      - description
+      - background_img
+      - gmap_link
+      - image_gallery
+      - activity
+      - contact_number
+    properties:
+      destination_name:
+        type: string
+        description: name of destination
+      location:
+        type: string
+        description: location
+      description:
+        type: string
+        description: description of destination
+      background_img:
+        type: string
+        description: url of background image
+      gmap_link:
+        type: string
+        description: link of gmap location
+      image_gallery:
+        type: array
+        items:
+          type: string
+        description: array of links for images.
+      activity:
+        type: array
+        items:
+          type: string
+        description: array of activities to be done.
+      contact_number:
+        type: string
+        description: contact number of destination
+
+  travel_service:
+    type: object
+    required:
+      - service_name
+      - location
+      - description
+      - service_provider
+      - service_price
+      - background_img
+      - gmap_link
+      - image_gallery
+      - contact_number
+    properties:
+      service_name:
+        type: string
+        description: name of service
+      location:
+        type: string
+        description: location
+      description:
+        type: string
+        description: description of destination
+      service_provider:
+        type: string
+        description: provider of service
+      service_price:
+        type: integer
+        description: price of service
+      background_img:
+        type: string
+        description: url of background image
+      gmap_link:
+        type: string
+        description: link of gmap location
+      image_gallery:
+        type: array
+        items:
+          type: string
+        description: array of links for images.
+      contact_number:
+        type: string
+        description: contact number of destination
 
 securityDefinitions:
   RefreshTokenAuth:
